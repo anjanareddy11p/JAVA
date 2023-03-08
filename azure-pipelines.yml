@@ -1,0 +1,30 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+steps:
+- task: JavaToolInstaller@1
+  inputs:
+    versionSpec: '11'
+    jdkArchitecture: 'x64'
+  displayName: 'Install JDK'
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'pom.xml'
+    mavenOptions: '-Xmx3072m'
+    javaHomeOption: 'JDKVersion'
+    jdkVersionOption: '1.11'
+    publishJUnitResults: true
+    testResultsFiles: '**/surefire-reports/TEST-*.xml'
+    goals: 'package'
+  displayName: 'Build with Maven'
+- script: |
+    java -cp target/myapp-1.0-SNAPSHOT.jar HelloWorld
+  displayName: 'Run Hello World'
