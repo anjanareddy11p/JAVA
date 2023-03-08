@@ -1,0 +1,18 @@
+trigger:
+- main
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+steps:
+- task: JavaToolInstaller@0
+  inputs:
+    versionSpec: '8'
+    jdkArchitectureOption: 'x64'
+    jdkSourceOption: 'LocalDirectory'
+
+- task: Maven@3
+  inputs:
+    mavenPomFile: 'path/to/pom.xml'
+    mavenOptions: '-Xmx3072m'
+    goals: 'clean package'
